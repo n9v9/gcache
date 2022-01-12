@@ -6,10 +6,11 @@ import "sync"
 // implementaitons.
 type Syncer[K comparable, V any] interface {
 	Cacher[K, V]
-	// Do executes the given function in an atomic context.
+	// Do executes the given function in an atomic context giving it exclusive
+	// access to the cache.
 	// That means that while Do is executing, read and write access to the cache
 	// is locked.
-	Do(atomic func())
+	Do(func(Cacher[K, V]))
 }
 
 type syncCache[K comparable, V any] struct {
@@ -54,8 +55,8 @@ func (s *syncCache[K, V]) Len() int {
 	return s.cache.Len()
 }
 
-func (s *syncCache[K, V]) Do(f func()) {
+func (s *syncCache[K, V]) Do(f func(Cacher[K, V])) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	f()
+	f(s.cache)
 }
