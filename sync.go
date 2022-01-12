@@ -2,9 +2,14 @@ package cache
 
 import "sync"
 
+// Syncer is the interface that is implemented by concurrency safe cache
+// implementaitons.
 type Syncer[K comparable, V any] interface {
 	Cacher[K, V]
-	Do(func())
+	// Do executes the given function in an atomic context.
+	// That means that while Do is executing, read and write access to the cache
+	// is locked.
+	Do(atomic func())
 }
 
 type syncCache[K comparable, V any] struct {
@@ -12,8 +17,10 @@ type syncCache[K comparable, V any] struct {
 	cache Cacher[K, V]
 }
 
+// NewSync makes c safe for concurrent access.
+// If c is already a Syncer, then this function is a no-op.
 func NewSync[K comparable, V any](c Cacher[K, V]) Syncer[K, V] {
-	if c, ok := c.(*syncCache[K, V]); ok {
+	if c, ok := c.(Syncer[K, V]); ok {
 		return c
 	}
 
