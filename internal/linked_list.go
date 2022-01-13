@@ -27,6 +27,10 @@ func (l *List[V]) PopFront() V {
 		l.front.prev = nil
 	}
 
+	if l.back == node {
+		l.back = nil
+	}
+
 	node.next = nil
 	node.prev = nil
 	return node.value
@@ -40,11 +44,15 @@ func (l *List[V]) MoveBack(node *Node[V]) {
 func (l *List[V]) Remove(node *Node[V]) {
 	if l.front == node {
 		l.front = node.next
-		l.front.prev = nil
+		if l.front != nil {
+			l.front.prev = nil
+		}
 	}
 	if l.back == node {
 		l.back = node.prev
-		l.back.next = nil
+		if l.back != nil {
+			l.back.next = nil
+		}
 	}
 	if node.prev != nil {
 		node.prev.next = node.next
