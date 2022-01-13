@@ -1,4 +1,4 @@
-package cache
+package gocache
 
 // Cacher is the interface that is implemented by every cache.
 type Cacher[K comparable, V any] interface {

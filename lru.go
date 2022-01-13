@@ -1,4 +1,4 @@
-package cache
+package gocache
 
 import "github.com/n9v9/gocache/internal"
 
