@@ -1,4 +1,4 @@
-package gocache
+package gcache
 
 import (
 	"testing"

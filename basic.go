@@ -1,4 +1,4 @@
-package gocache
+package gcache
 
 // ReacCacher is the interface that is implemented by every read only cache.
 type ReadCacher[K comparable, V any] interface {

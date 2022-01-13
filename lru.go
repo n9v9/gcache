@@ -1,6 +1,6 @@
-package gocache
+package gcache
 
-import "github.com/n9v9/gocache/internal"
+import "github.com/n9v9/gcache/internal"
 
 type lruEntry[K comparable, V any] struct {
 	node  *internal.Node[K]

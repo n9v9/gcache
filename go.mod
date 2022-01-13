@@ -1,4 +1,4 @@
-module github.com/n9v9/gocache
+module github.com/n9v9/gcache
 
 go 1.18
 
