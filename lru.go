@@ -41,6 +41,9 @@ func (l *lruCache[K, V]) Set(key K, value V) {
 	entry, ok := l.cache.Get(key)
 
 	if ok {
+		// This modifies the value already in the cache, so there
+		// is no need for another Set on the inner cache.
+		entry.value = value
 		l.keys.MoveBack(entry.node)
 	} else {
 		node := l.keys.PushBack(key)
@@ -48,12 +51,12 @@ func (l *lruCache[K, V]) Set(key K, value V) {
 			node:  node,
 			value: value,
 		}
+		l.cache.Set(key, entry)
 		if l.cache.Len() > l.maxSize {
-			l.keys.PopFront()
+			old := l.keys.PopFront()
+			l.cache.Delete(old)
 		}
 	}
-
-	l.cache.Set(key, entry)
 }
 
 func (l *lruCache[K, V]) Delete(key K) (value V, ok bool) {
