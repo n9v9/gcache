@@ -7,6 +7,12 @@ type ReadCacher[K comparable, V any] interface {
 	Get(key K) (value V, ok bool)
 	// Len returns the number of entries in the cache.
 	Len() int
+	// Keys returns a slice of all keys in the cache.
+	Keys() []K
+	// Values returns a slice of all values in the cache.
+	Values() []V
+	// ForEach calls the given function for each entry in the cache.
+	ForEach(func(key K, value V))
 }
 
 // Cacher is the interface that is implemented by every read and write cache.
@@ -50,4 +56,26 @@ func (b *basicCache[K, V]) Delete(key K) (value V, ok bool) {
 
 func (b *basicCache[K, V]) Len() int {
 	return len(b.entries)
+}
+
+func (b *basicCache[K, V]) Keys() []K {
+	keys := make([]K, 0, len(b.entries))
+	for key := range b.entries {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func (b *basicCache[K, V]) Values() []V {
+	values := make([]V, 0, len(b.entries))
+	for _, value := range b.entries {
+		values = append(values, value)
+	}
+	return values
+}
+
+func (b *basicCache[K, V]) ForEach(f func(K, V)) {
+	for key, value := range b.entries {
+		f(key, value)
+	}
 }

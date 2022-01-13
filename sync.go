@@ -60,6 +60,24 @@ func (s *syncCache[K, V]) Len() int {
 	return s.cache.Len()
 }
 
+func (s *syncCache[K, V]) Keys() []K {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.cache.Keys()
+}
+
+func (s *syncCache[K, V]) Values() []V {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.cache.Values()
+}
+
+func (s *syncCache[K, V]) ForEach(f func(K, V)) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.cache.ForEach(f)
+}
+
 func (s *syncCache[K, V]) Do(f func(Cacher[K, V])) {
 	s.mu.Lock()
 	defer s.mu.Unlock()

@@ -51,4 +51,15 @@ func TestBasic(t *testing.T) {
 		c.Delete(1)
 		require.Equal(t, 0, c.Len())
 	})
+
+	t.Run("keys and values", func(t *testing.T) {
+		c := NewBasic[int, string]()
+
+		c.Set(1, "A")
+		c.Set(2, "B")
+		c.Set(3, "C")
+
+		require.ElementsMatch(t, []int{1, 2, 3}, c.Keys())
+		require.ElementsMatch(t, []string{"A", "B", "C"}, c.Values())
+	})
 }

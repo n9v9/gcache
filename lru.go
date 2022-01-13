@@ -78,3 +78,21 @@ func (l *lruCache[K, V]) Delete(key K) (value V, ok bool) {
 func (l *lruCache[K, V]) Len() int {
 	return l.cache.Len()
 }
+
+func (l *lruCache[K, V]) Keys() []K {
+	return l.cache.Keys()
+}
+
+func (l *lruCache[K, V]) Values() []V {
+	values := make([]V, 0, l.cache.Len())
+	l.cache.ForEach(func(_ K, value *lruEntry[K, V]) {
+		values = append(values, value.value)
+	})
+	return values
+}
+
+func (l *lruCache[K, V]) ForEach(f func(K, V)) {
+	l.cache.ForEach(func(key K, value *lruEntry[K, V]) {
+		f(key, value.value)
+	})
+}
