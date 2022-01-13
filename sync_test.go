@@ -3,6 +3,7 @@ package gocache
 import (
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -95,5 +96,32 @@ func TestSync(t *testing.T) {
 
 		sum, _ := s.Get(key)
 		require.Equal(t, limit, sum)
+	})
+
+	t.Run("RDo", func(t *testing.T) {
+		s := NewSync(NewBasic[string, int]())
+
+		delay := time.Millisecond * 50
+		delta := delay * 2
+		limit := 10
+		wg := sync.WaitGroup{}
+		wg.Add(limit)
+
+		start := time.Now()
+
+		for i := 0; i < limit; i++ {
+			go func() {
+				defer wg.Done()
+				// Check that all RDo calls run concurrently.
+				s.RDo(func(_ ReadCacher[string, int]) {
+					time.Sleep(delay)
+				})
+			}()
+		}
+
+		wg.Wait()
+
+		taken := time.Since(start)
+		require.InDelta(t, delay.Milliseconds(), taken.Milliseconds(), float64(delta.Milliseconds()))
 	})
 }

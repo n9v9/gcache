@@ -11,6 +11,11 @@ type Syncer[K comparable, V any] interface {
 	// That means that while Do is executing, read and write access to the cache
 	// is locked.
 	Do(func(Cacher[K, V]))
+	// RDo executes the given function in an atomic context giving it exclusive
+	// read access to the cache.
+	// That means that while RDo is executing, write access to the cache is
+	// locked.
+	RDo(func(ReadCacher[K, V]))
 }
 
 type syncCache[K comparable, V any] struct {
@@ -58,5 +63,11 @@ func (s *syncCache[K, V]) Len() int {
 func (s *syncCache[K, V]) Do(f func(Cacher[K, V])) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	f(s.cache)
+}
+
+func (s *syncCache[K, V]) RDo(f func(ReadCacher[K, V])) {
+	s.mu.RLock()
+	defer s.mu.RLock()
 	f(s.cache)
 }

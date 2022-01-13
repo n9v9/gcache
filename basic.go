@@ -1,18 +1,23 @@
 package gocache
 
-// Cacher is the interface that is implemented by every cache.
-type Cacher[K comparable, V any] interface {
+// ReacCacher is the interface that is implemented by every read only cache.
+type ReadCacher[K comparable, V any] interface {
 	// Get returns the value for the given key.
 	// If no such key exists then the zero value is returned and ok is false.
 	Get(key K) (value V, ok bool)
+	// Len returns the number of entries in the cache.
+	Len() int
+}
+
+// Cacher is the interface that is implemented by every read and write cache.
+type Cacher[K comparable, V any] interface {
+	ReadCacher[K, V]
 	// Set inserts a new key value pair into the cache.
 	Set(key K, value V)
 	// Delete deletes the entry with the given key from the cache and returns
 	// the removed value.
 	// If no such key exists then the zero value is returned and ok is false.
 	Delete(key K) (value V, ok bool)
-	// Len returns the number of entries in the cache.
-	Len() int
 }
 
 type basicCache[K comparable, V any] struct {
