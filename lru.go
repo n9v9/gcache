@@ -13,6 +13,9 @@ type lruCache[K comparable, V any] struct {
 	maxSize int
 }
 
+// NewLRU returns a new cache that removes the least recently used entry when
+// maxSize is reached.
+// The function panics when maxSize is less than 1.
 func NewLRU[K comparable, V any](maxSize int) Cacher[K, V] {
 	if maxSize <= 0 {
 		panic("cache: maxSize must be greater than zero")
