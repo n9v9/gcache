@@ -14,13 +14,13 @@ func TestLRU(t *testing.T) {
 
 	entryExists := func(t *testing.T, c Cacher[string, int], key string, value int) {
 		v, ok := c.Get(key)
-		require.Equal(t, true, ok)
+		require.True(t, ok)
 		require.Equal(t, value, v)
 	}
 
 	entryNotExists := func(t *testing.T, c Cacher[string, int], key string) {
 		_, ok := c.Get(key)
-		require.Equal(t, false, ok)
+		require.False(t, ok)
 	}
 
 	t.Run("different keys", func(t *testing.T) {
@@ -70,21 +70,21 @@ func TestLRU(t *testing.T) {
 		require.Equal(t, 0, l.Len())
 
 		v, ok := l.Delete("A")
-		require.Equal(t, false, ok)
+		require.False(t, ok)
 
 		l.Set("A", 1)
 		l.Set("B", 2)
 		require.Equal(t, 2, l.Len())
 
 		v, ok = l.Delete("A")
-		require.Equal(t, true, ok)
+		require.True(t, ok)
 		require.Equal(t, 1, v)
 		require.Equal(t, 1, l.Len())
 		entryNotExists(t, l, "A")
 		entryExists(t, l, "B", 2)
 
 		v, ok = l.Delete("B")
-		require.Equal(t, true, ok)
+		require.True(t, ok)
 		require.Equal(t, 2, v)
 		require.Equal(t, 0, l.Len())
 		entryNotExists(t, l, "B")

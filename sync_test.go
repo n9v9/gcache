@@ -31,7 +31,7 @@ func TestSync(t *testing.T) {
 
 		for i := 0; i < limit; i++ {
 			v, ok := s.Get(i)
-			require.Equal(t, true, ok)
+			require.True(t, ok)
 			require.Equal(t, i, v)
 		}
 	})

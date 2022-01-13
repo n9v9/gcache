@@ -12,13 +12,13 @@ func TestBasic(t *testing.T) {
 
 		v, ok := c.Get(1)
 		require.Equal(t, "", v)
-		require.Equal(t, false, ok)
+		require.False(t, ok)
 
 		c.Set(1, "A")
 
 		v, ok = c.Get(1)
 		require.Equal(t, "A", v)
-		require.Equal(t, true, ok)
+		require.True(t, ok)
 	})
 
 	t.Run("delete", func(t *testing.T) {
@@ -26,13 +26,13 @@ func TestBasic(t *testing.T) {
 
 		v, ok := c.Delete(1)
 		require.Equal(t, "", v)
-		require.Equal(t, false, ok)
+		require.False(t, ok)
 
 		c.Set(1, "A")
 
 		v, ok = c.Delete(1)
 		require.Equal(t, "A", v)
-		require.Equal(t, true, ok)
+		require.True(t, ok)
 	})
 
 	t.Run("len", func(t *testing.T) {
