@@ -5,7 +5,7 @@ gcache is a generic caching library for Go 1.18+.
 ## Install
 
 ```
-go1.18beta1 get github.com/n9v9/gcache
+go get github.com/n9v9/gcache
 ```
 
 ## Concepts
