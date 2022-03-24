@@ -65,28 +65,29 @@ func TestLRU(t *testing.T) {
 	})
 
 	t.Run("delete and len", func(t *testing.T) {
+		r := require.New(t)
 		l := NewLRU[string, int](2)
 
-		require.Equal(t, 0, l.Len())
+		r.Empty(l.Len())
 
-		v, ok := l.Delete("A")
-		require.False(t, ok)
+		_, ok := l.Delete("A")
+		r.False(ok)
 
 		l.Set("A", 1)
 		l.Set("B", 2)
-		require.Equal(t, 2, l.Len())
+		r.Equal(2, l.Len())
 
-		v, ok = l.Delete("A")
-		require.True(t, ok)
-		require.Equal(t, 1, v)
-		require.Equal(t, 1, l.Len())
+		v, ok := l.Delete("A")
+		r.True(ok)
+		r.Equal(1, v)
+		r.Equal(1, l.Len())
 		entryNotExists(t, l, "A")
 		entryExists(t, l, "B", 2)
 
 		v, ok = l.Delete("B")
-		require.True(t, ok)
-		require.Equal(t, 2, v)
-		require.Equal(t, 0, l.Len())
+		r.True(ok)
+		r.Equal(2, v)
+		r.Equal(0, l.Len())
 		entryNotExists(t, l, "B")
 	})
 }

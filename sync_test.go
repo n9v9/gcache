@@ -38,12 +38,13 @@ func TestSync(t *testing.T) {
 	})
 
 	t.Run("Delete and Len", func(t *testing.T) {
+		r := require.New(t)
 		s := NewSync(NewBasic[string, int]())
 
 		key := "deletes"
 		value := 42
 		s.Set(key, value)
-		require.Equal(t, 1, s.Len())
+		r.Equal(1, s.Len())
 
 		limit := 10
 		wg := sync.WaitGroup{}
@@ -59,7 +60,7 @@ func TestSync(t *testing.T) {
 				v, ok := s.Delete(key)
 
 				if ok {
-					require.Equal(t, 0, s.Len())
+					r.Empty(s.Len())
 					mu.Lock()
 					deletes++
 					got = v
@@ -70,8 +71,8 @@ func TestSync(t *testing.T) {
 
 		wg.Wait()
 
-		require.Equal(t, 1, deletes)
-		require.Equal(t, value, got)
+		r.Equal(1, deletes)
+		r.Equal(value, got)
 	})
 
 	t.Run("Do", func(t *testing.T) {

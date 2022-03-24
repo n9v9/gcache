@@ -8,58 +8,62 @@ import (
 
 func TestBasic(t *testing.T) {
 	t.Run("get", func(t *testing.T) {
+		r := require.New(t)
 		c := NewBasic[int, string]()
 
 		v, ok := c.Get(1)
-		require.Equal(t, "", v)
-		require.False(t, ok)
+		r.Empty(v)
+		r.False(ok)
 
 		c.Set(1, "A")
 
 		v, ok = c.Get(1)
-		require.Equal(t, "A", v)
-		require.True(t, ok)
+		r.Equal("A", v)
+		r.True(ok)
 	})
 
 	t.Run("delete", func(t *testing.T) {
+		r := require.New(t)
 		c := NewBasic[int, string]()
 
 		v, ok := c.Delete(1)
-		require.Equal(t, "", v)
-		require.False(t, ok)
+		r.Empty(v)
+		r.False(ok)
 
 		c.Set(1, "A")
 
 		v, ok = c.Delete(1)
-		require.Equal(t, "A", v)
-		require.True(t, ok)
+		r.Equal("A", v)
+		r.True(ok)
 	})
 
 	t.Run("len", func(t *testing.T) {
+		r := require.New(t)
 		c := NewBasic[int, string]()
-		require.Equal(t, 0, c.Len())
+		r.Empty(c.Len())
 
 		c.Set(1, "A")
-		require.Equal(t, 1, c.Len())
+		r.Equal(1, c.Len())
 
 		c.Set(2, "B")
-		require.Equal(t, 2, c.Len())
+		r.Equal(2, c.Len())
 
 		c.Delete(2)
-		require.Equal(t, 1, c.Len())
+		r.Equal(1, c.Len())
 
 		c.Delete(1)
-		require.Equal(t, 0, c.Len())
+		r.Equal(0, c.Len())
 	})
 
 	t.Run("keys and values", func(t *testing.T) {
+		r := require.New(t)
 		c := NewBasic[int, string]()
 
 		c.Set(1, "A")
 		c.Set(2, "B")
 		c.Set(3, "C")
 
-		require.ElementsMatch(t, []int{1, 2, 3}, c.Keys())
-		require.ElementsMatch(t, []string{"A", "B", "C"}, c.Values())
+		r.ElementsMatch([]int{1, 2, 3}, c.Keys())
+		r.ElementsMatch([]string{"A", "B", "C"}, c.Values())
 	})
 }

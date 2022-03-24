@@ -13,50 +13,53 @@ func TestLinkedList(t *testing.T) {
 	})
 
 	t.Run("PushBack", func(t *testing.T) {
+		r := require.New(t)
 		l := &List[int]{}
 
 		first := l.PushBack(1)
-		require.Equal(t, first, l.front)
-		require.Equal(t, first, l.back)
-		require.Nil(t, first.prev)
-		require.Nil(t, first.next)
+		r.Equal(first, l.front)
+		r.Equal(first, l.back)
+		r.Nil(first.prev)
+		r.Nil(first.next)
 
 		second := l.PushBack(2)
-		require.Equal(t, first, l.front)
-		require.Equal(t, second, l.back)
-		require.Equal(t, second, first.next)
-		require.Equal(t, first, second.prev)
-		require.Nil(t, second.next)
+		r.Equal(first, l.front)
+		r.Equal(second, l.back)
+		r.Equal(second, first.next)
+		r.Equal(first, second.prev)
+		r.Nil(second.next)
 
 		third := l.PushBack(3)
-		require.Equal(t, first, l.front)
-		require.Equal(t, third, l.back)
-		require.Equal(t, third, second.next)
-		require.Equal(t, second, third.prev)
-		require.Nil(t, third.next)
+		r.Equal(first, l.front)
+		r.Equal(third, l.back)
+		r.Equal(third, second.next)
+		r.Equal(second, third.prev)
+		r.Nil(third.next)
 	})
 
 	t.Run("PopFront", func(t *testing.T) {
+		r := require.New(t)
 		l := &List[int]{}
 
 		l.PushBack(1)
 		second := l.PushBack(2)
 		third := l.PushBack(3)
 
-		require.Equal(t, 1, l.PopFront())
-		require.Equal(t, second, l.front)
-		require.Equal(t, third, l.back)
+		r.Equal(1, l.PopFront())
+		r.Equal(second, l.front)
+		r.Equal(third, l.back)
 
-		require.Equal(t, 2, l.PopFront())
-		require.Equal(t, third, l.front)
-		require.Equal(t, third, l.back)
+		r.Equal(2, l.PopFront())
+		r.Equal(third, l.front)
+		r.Equal(third, l.back)
 
-		require.Equal(t, 3, l.PopFront())
-		require.Nil(t, l.front)
-		require.Nil(t, l.back)
+		r.Equal(3, l.PopFront())
+		r.Nil(l.front)
+		r.Nil(l.back)
 	})
 
 	t.Run("MoveBack", func(t *testing.T) {
+		r := require.New(t)
 		l := &List[int]{}
 
 		node := l.PushBack(1)
@@ -64,37 +67,39 @@ func TestLinkedList(t *testing.T) {
 
 		l.MoveBack(node)
 
-		require.Equal(t, 2, l.PopFront())
-		require.Equal(t, 1, l.PopFront())
+		r.Equal(2, l.PopFront())
+		r.Equal(1, l.PopFront())
 	})
 
 	t.Run("Remove", func(t *testing.T) {
+		r := require.New(t)
 		l := &List[int]{}
 
 		first := l.PushBack(1)
 		second := l.PushBack(2)
 
 		l.Remove(first)
-		require.Equal(t, second, l.front)
-		require.Equal(t, second, l.back)
+		r.Equal(second, l.front)
+		r.Equal(second, l.back)
 
 		l.Remove(second)
-		require.Nil(t, l.front)
-		require.Nil(t, l.back)
+		r.Nil(l.front)
+		r.Nil(l.back)
 	})
 
 	t.Run("Remove reversed", func(t *testing.T) {
+		r := require.New(t)
 		l := &List[int]{}
 
 		first := l.PushBack(1)
 		second := l.PushBack(2)
 
 		l.Remove(second)
-		require.Equal(t, first, l.front)
-		require.Equal(t, first, l.back)
+		r.Equal(first, l.front)
+		r.Equal(first, l.back)
 
 		l.Remove(first)
-		require.Nil(t, l.front)
-		require.Nil(t, l.back)
+		r.Nil(l.front)
+		r.Nil(l.back)
 	})
 }
