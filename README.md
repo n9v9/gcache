@@ -1,5 +1,8 @@
 # gcache
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/n9v9/gcache.svg)](https://pkg.go.dev/github.com/n9v9/gcache)
+[![Go Report Card](https://goreportcard.com/badge/github.com/n9v9/gcache)](https://goreportcard.com/report/github.com/n9v9/gcache)
+
 gcache is a generic caching library for Go 1.18+.
 
 ## Install
