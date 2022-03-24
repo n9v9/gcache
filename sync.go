@@ -3,7 +3,7 @@ package gcache
 import "sync"
 
 // Syncer is the interface that is implemented by concurrency safe cache
-// implementaitons.
+// implementations.
 type Syncer[K comparable, V any] interface {
 	Cacher[K, V]
 	// Do executes the given function in an atomic context giving it exclusive
